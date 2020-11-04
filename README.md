@@ -24,6 +24,8 @@ After you have all the files downloaded:
 
 **Step 3:** In the terminal install axios using: **npm install axios** 
 
+**Step 4:** Start the project.
+
 
 ## Built With
 
