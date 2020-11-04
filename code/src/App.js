@@ -3,6 +3,7 @@ import axios from 'axios';
 import DataTable from './Components/Table/dataTable';
 import './App.css';
 import Tr from './Components/tr';
+import covid from './covid.png';
 
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
@@ -12,10 +13,12 @@ function pageData({data, per = 50, page=1 }){
 }
 
 export default function App({}) {
-  // const[stats, setStats] = useState([]);
+  const[latest, setLatest] = useState([]);
   const[countries, setCountries] = useState([]);
   const[searchCountries, setSearchCountries] = useState("");
+  const covidImg = <img className="img" src={covid} alt="Covid image"/>;
 
+  
   const[state, setState]= useState({
     rawData: countries,
     data: pageData({ data: countries }),
@@ -24,23 +27,25 @@ export default function App({}) {
     sortedBy: { country: 'ascending'},
   }); 
 
+  //Change date format
+  const date = new Date(parseInt(latest.updated));
+  const lastUpdated = date.toString();
+
   // Getting world COVID-19 data from API
   useEffect(() => {
     axios
       .all([
-        // axios.get("https://corona.lmao.ninja/v2/all"),
+        axios.get("https://corona.lmao.ninja/v2/all"),
         axios.get("https://corona.lmao.ninja/v2/countries?sort=country")
       ])
       .then(response => {
-        // setStats(response[0].data);
-        setCountries(response[0].data);
+        setLatest(response[0].data);
+        setCountries(response[1].data);
       })
       .catch(err => {
         console.log(err);
       });
   },[]);
-
-
   
   // Sorting the data
   useEffect(() => {
@@ -75,17 +80,21 @@ export default function App({}) {
     }));
   }
 
-  // useEffect(() => {
-  //   fetch("https://corona.lmao.ninja/v2/countries?sort=country")
-  //   .then((response) => response.json())
-  //   .then((json) => setCountries(json));
-  // }, [])
-
   return (
     <div className='center'>
-      <h1>COVID-19 world dashboard</h1>
+      <br/>
+      <h2>COVID-19 Dashboard</h2>
+      <br/>
+      {covidImg}
+      <p className="text">
+        Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.
+      <br/>
+      <br/>
+      The following data has been recently updated at: {lastUpdated}
+      </p>
+      <br/>
       <DataTable 
-      // loadMore = {loadMore}
+      loadMore = {loadMore}
       items={countries}
       renderHead={() => (
         <>
@@ -114,7 +123,9 @@ export default function App({}) {
       )}
       renderRow={(row) => (
         <tr>
-          <td>{row.critical}</td>
+          <td>
+              <div> <img className="flag-img" src={row.countryInfo.flag} alt=""/></div>
+          </td>
           <td>{row.country}</td>
           <td>{row.cases}</td>
           <td>{row.active}</td>
