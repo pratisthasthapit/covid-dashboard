@@ -13,8 +13,8 @@ export default function DataTable({
         document.addEventListener('scroll', handleScroll);
         return() => document.removeEventListener('scroll', handleScroll);
     }, []);
-
-    function handleScroll(e){
+    
+    function handleScroll(){
         const cY = window.scrollY;
         const tbh = ref.current.offsetHeight;
         const thresh = 1000;

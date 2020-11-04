@@ -4,9 +4,11 @@ export default function Icon({
     children,
     active = false,
     size = 16, 
+    onClick,
     }){
     return(
         <svg 
+            onClick = {onClick}
             style={{height: size, width: size}}
             fill="none"
             stroke={active ? 'blue' : 'grey'}  
