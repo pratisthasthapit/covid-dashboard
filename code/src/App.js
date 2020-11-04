@@ -11,7 +11,6 @@ function pageData({data, per = 50, page=1 }){
 export default function App({}) {
   // const[stats, setStats] = useState([]);
   const[countries, setCountries] = useState([]);
-
   const[state, setState]= useState({
     rawData: countries,
     data: pageData({ data: countries }),
@@ -70,14 +69,11 @@ export default function App({}) {
     }));
   }
 
-  console.log(state.data);
-
   return (
-    <div>
-      COVID-19 world dashboard
+    <div className='center'>
+      <h1>COVID-19 world dashboard</h1>
       <DataTable 
       loadMore = {loadMore}
-      // items={state.data}
       items={state.data}
       renderHead={() => (
         <>

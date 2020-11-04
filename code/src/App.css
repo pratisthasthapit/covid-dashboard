@@ -3,6 +3,10 @@
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+.center{
+    text-align: center;
+}
+
 .flex-container{
     display: flex;
     flex-direction: row;
