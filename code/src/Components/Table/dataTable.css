@@ -1,7 +1,9 @@
 .__data_table {
     max-width: 100%;
     box-sizing: border-box;
-    margin: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2rem;
 }
 
 .__data_table tr{

@@ -4,6 +4,9 @@ import DataTable from './Components/Table/dataTable';
 import './App.css';
 import Tr from './Components/tr';
 
+require("es6-promise").polyfill();
+require("isomorphic-fetch");
+
 function pageData({data, per = 50, page=1 }){
   return data.slice(per * (page - 1), per * page);
 }
@@ -11,6 +14,8 @@ function pageData({data, per = 50, page=1 }){
 export default function App({}) {
   // const[stats, setStats] = useState([]);
   const[countries, setCountries] = useState([]);
+  const[searchCountries, setSearchCountries] = useState("");
+
   const[state, setState]= useState({
     rawData: countries,
     data: pageData({ data: countries }),
@@ -29,14 +34,15 @@ export default function App({}) {
       .then(response => {
         // setStats(response[0].data);
         setCountries(response[0].data);
-        setState.countries(response[0].data);
       })
       .catch(err => {
         console.log(err);
       });
   },[]);
+
+
   
-  //Soting the data using bubble sort
+  // Sorting the data
   useEffect(() => {
     if (!state.sortedBy) return;
     const sortKey = Object.keys(state.sortedBy)[0];
@@ -69,12 +75,18 @@ export default function App({}) {
     }));
   }
 
+  // useEffect(() => {
+  //   fetch("https://corona.lmao.ninja/v2/countries?sort=country")
+  //   .then((response) => response.json())
+  //   .then((json) => setCountries(json));
+  // }, [])
+
   return (
     <div className='center'>
       <h1>COVID-19 world dashboard</h1>
       <DataTable 
-      loadMore = {loadMore}
-      items={state.data}
+      // loadMore = {loadMore}
+      items={countries}
       renderHead={() => (
         <>
           <Tr label ='Flag'/>
