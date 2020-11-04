@@ -1,12 +1,24 @@
-import React, { useEffect, useState  } from "react";
-import axios from "axios";
-import DataTable from "./Components/dataTable"
+import React, { useEffect, useState  } from 'react';
+import axios from 'axios';
+import DataTable from './Components/Table/dataTable';
+import './App.css';
+import Tr from './Components/tr';
+
+function pageData({data, per=50, page=1 }){
+  // return (data.slice(per * (page - 1), per * page));
+  return data.slice(0, 50);
+}
 
 function App() {
 
   const[stats, setStats] = useState([]);
   const[countries, setCountries] = useState([]);
-
+  const[state, setState]= useState({
+    worldData: pageData({ data: countries }),
+    loading: false,
+    page: 1,
+  });  
+  
   // Getting world COVID-19 data from API
   useEffect(() => {
     axios
@@ -17,40 +29,46 @@ function App() {
       .then(response => {
         setStats(response[0].data);
         setCountries(response[1].data);
-        console.log(response[1].data);
       })
       .catch(err => {
         console.log(err);
       });
   },[]);
 
-  const tableData = countries.map((data, i) => {
-    return(
-          <tr key={i}>
-            <td><img src={data.img}/></td>
-            <td>{data.country}</td>
-            <td>{data.cases}</td>
-            <td>{data.active}</td>
-            <td>{data.recovered}</td>
-            <td>{data.deaths}</td>
-          </tr>
-    )}
-  );
+  
+
+  function loadMore(){
+    if (state.loading) return;
+    setState((prev) => ({
+      ...prev,
+      loading: true,
+    }));
+
+    setState((prev) => ({
+      worldData: [
+        ...prev.worldData, 
+        ...pageData({ data: countries, page: prev.page + 1 }),
+      ],
+      loading: false,
+      page: prev.page + 1,
+    }));
+  }
 
   return (
     <div>
       COVID-19 world dashboard
       <DataTable 
+      loadMore = {loadMore}
       items={countries}
       renderHead={() => (
-        <tr>
-          <th>Flag</th>
-          <th>Country</th> 
-          <th>Total cases</th>
-          <th>Active cases</th>
-          <th>Recovered</th>
-          <th>Death</th>
-        </tr>
+        <>
+          <Tr label ='Flag'/>
+          <Tr label ='Country' sortable sorted='ascending'/>
+          <Tr label ='Total cases' sortable/>
+          <Tr label ='Active cases' sortable/>
+          <Tr label ='Recovered' sortable/>
+          <Tr label ='Death' sortable/>
+        </>
       )}
       renderRow={(row) => (
         <tr>

@@ -1,0 +1,31 @@
+.__data_table {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.__data_table tr{
+    border-collapse: collapse;
+}
+ th{
+    text-align: left;
+}
+
+.__data_table tr th,
+.__data_table tr td {
+    padding: 0.5rem;
+    border-top: 1px solid gainsboro;
+    border-left: 1px solid gainsboro;
+}
+
+.__data_table tr th:last-child,
+.__data_table tr td:last-child {
+    border-right: 1px solid gainsboro;
+}
+
+.__data_table tr th {
+    font-weight: 700;
+}
+
+.__data_table tr td{
+    font-weight: 300;
+}
