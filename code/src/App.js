@@ -5,9 +5,6 @@ import './App.css';
 import Tr from './Components/tr';
 import covid from './covid.png';
 
-require("es6-promise").polyfill();
-require("isomorphic-fetch");
-
 function pageData({data, per = 50, page=1 }){
   return data.slice(per * (page - 1), per * page);
 }
@@ -15,7 +12,6 @@ function pageData({data, per = 50, page=1 }){
 export default function App({}) {
   const[latest, setLatest] = useState([]);
   const[countries, setCountries] = useState([]);
-  const[searchCountries, setSearchCountries] = useState("");
   const covidImg = <img className="img" src={covid} alt="Covid image"/>;
 
   
